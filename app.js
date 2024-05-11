@@ -1,6 +1,6 @@
 import express from 'express';
-import morgan from 'morgan';
 import cors from 'cors';
+import morgan from 'morgan';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv'
 
@@ -10,9 +10,9 @@ dotenv.config()
 
 const app = express ();
 
-app.use (morgan ('dev'));
-app.use (cors ());
 app.use (express.json ());
+app.use (cors ());
+app.use (morgan ('dev'));
 
 app.use ('/api/contacts', contactsRouter);
 
@@ -21,7 +21,7 @@ app.use ((_, res) => {
 });
 
 app.use ((err, req, res, next) => {
-  const {status = 500, message = 'Server error'} = err;
+  const {status = 500, message = 'Internal Server Error'} = err;
   res.status (status).json ({message});
 });
 
@@ -29,12 +29,12 @@ app.use ((err, req, res, next) => {
 mongoose
   .connect (process.env.DB_HOST)
   .then (() => {
-    console.log ('Database connected success');
+    console.log ('Database connection successful');
     app.listen (3000, () => {
       console.log ('Server is running. Use our API on port: 3000');
     });
   })
-  .catch (error => {
-    console.log (error);
+  .catch((error) => {
+    console.log(error)
     process.exit(1)
   });

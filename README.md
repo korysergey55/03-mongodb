@@ -1,7 +1,7 @@
 # node-rest-api
 
 Tasks:
-1.   Write the controllers in the contactsControllers.js file.
+1.  Write code to create a connection to MongoDB using Mongoose.
 2.  The REST API must support the following routes
 3.  GET /api/contacts
 - Calls the listContacts service function to work with the contacts.json json file
@@ -30,3 +30,9 @@ Tasks:
 - If everything is fine with the body, it calls the updateContact service function, which should be created in the contactsServices.js file (located in the services folder). This function should take the id of the contact to be updated and the data from the body and update the contact in the json file contacts.json
 - According to the result of the function, it returns an updated contact object with a status of 200.
 If the contact by id is not found, returns a json of the format {"message": "Not found"} with a status of 404
+
+8. PATCH /api/contacts/:contactId/favorite
+- Gets the contactId parameter
+- Receives the body in json format with the update of the favorite field
+- If everything is fine with the body, calls the function updateStatusContact (contactId, body) (write it) to update the contact in the database
+- According to the result of the function, it returns an updated contact object with a status of 200. Otherwise, it returns json with the key {"message":"Not found"} and a status of 404
