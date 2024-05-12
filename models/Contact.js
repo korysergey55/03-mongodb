@@ -13,7 +13,7 @@ const contactShema = new Schema (
     phone: {
       type: String,
     },
-     favorite: {
+    favorite: {
       type: Boolean,
       default: false,
     },
