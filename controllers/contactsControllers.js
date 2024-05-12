@@ -20,7 +20,7 @@ export const getOneContact = async (req, res, next) => {
     const {id} = req.params;
     const result = await contactsService.getContactById (id);
     if (!result) {
-      throw HttpError (404, `Contact with id=${id} not found`);
+      throw HttpError (404, `Not found`);
     }
     res.status (200).json (result);
   } catch (error) {
@@ -33,7 +33,7 @@ export const deleteContact = async (req, res, next) => {
     const {id} = req.params;
     const result = await contactsService.removeContact (id);
     if (!result) {
-      throw HttpError (404, `Contact with id=${id} not found`);
+      throw HttpError (404, `Not found`);
     }
     res.status (200).json (result);
   } catch (error) {
@@ -75,12 +75,12 @@ export const updateStatusContact  = async (req, res, next) => {
   try {
     const {error} = updateStatusSchema.validate (req.body);
     if (error) {
-      throw HttpError (400, `Body must have favorite status field`);
+      throw HttpError (400, `The body must have a favorite field`);
     }
     const {id} = req.params;
     const result = await contactsService.updateContactById (id, req.body);
     if (!result) {
-      throw HttpError (404, `Contact with id=${id} not found`);
+      throw HttpError (404, error.message);
     }
     res.status (200).json (result);
   } catch (error) {
