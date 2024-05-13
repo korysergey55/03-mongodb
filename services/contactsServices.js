@@ -30,6 +30,7 @@ export const removeContact = async contactId => {
 
 
 export const getFavoritesContacts = async () => {
-  return Contact.find ({favorite:true});
+const contact = await Contact.find ({favorite:true});
+  return contact
 };
 
