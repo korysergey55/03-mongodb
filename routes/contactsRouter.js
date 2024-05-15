@@ -10,8 +10,6 @@ import {
 
 import isValidId from '../middelwarws/isValidId.js';
 
-isValidId;
-
 const contactsRouter = express.Router ();
 
 contactsRouter.get ('/', getAllContacts);
