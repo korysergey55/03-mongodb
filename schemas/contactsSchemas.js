@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { emailRegular } from '../constants/constants.js';
 
 export const createContactSchema = Joi.object({
   id: Joi.string (),
@@ -18,6 +19,16 @@ export const updateContactSchema = Joi.object({
 
 export const updateStatusSchema = Joi.object({
   favorite:Joi.boolean().required()
+});
+
+export const userRegistrationSchema = Joi.object({
+  email: Joi.string().pattern(emailRegular).required(),
+  password: Joi.string().min(7).required()
+});
+
+export const userLoginSchema = Joi.object({
+  email: Joi.string().pattern(emailRegular).required(),
+  password: Joi.string().min(7).required()
 });
 
 
