@@ -20,7 +20,8 @@ export const authRegistretion = async (req, res, next) => {
       throw HttpError (409, 'Email in use');
     }
 
-    const newUser = await authServices.createUser (req.body);
+    const newUser = await authServices.createUser(req.body);
+    console.log(newUser)
     res.status (201).json ({
       user: {
         email: newUser.email,
@@ -57,7 +58,6 @@ export const authLogin = async (req, res, next) => {
     }
     const token = createToken(payload)
     const isVerify = verifyToken(token)
-    console.log(isVerify)
     
     res.json ({
       token: token,

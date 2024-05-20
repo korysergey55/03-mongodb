@@ -1,36 +1,24 @@
 import Contact from '../models/Contact.js';
 
-export const getAllContacts = async () => {
-  return Contact.find ();
+export const getAllContacts = (search = {}) => {
+  const {filter = {}, fields = '', settings = {}} = search;
+  return Contact.find (filter, fields, settings);
 };
 
-export const getContactById = async contactId => {
-  const contactById = await Contact.findById (contactId);
-  return contactById;
+export const getContactById = filter => Contact.findOne (filter);
+
+export const createContact = data =>
+  Contact.create ({...data, favorite: false});
+
+export const updateContactById = (filter, data) =>
+  Contact.findByIdAndUpdate (filter, data, {
+    new: true,
+    runValidators: true,
+  });
+
+export const removeContact = async filter => Contact.findOneAndDelete (filter);
+
+export const getFavoritesContacts = async (owner = {}) => {
+  const contact = await Contact.find ({owner, favorite: true});
+  return contact;
 };
-
-export const createContact = async data => {
-  const addedContact = await Contact.create ({...data,favorite:false});
-  return addedContact;
-};
-
-export const updateContactById = async (contactId, data) => {
-  const updatedContact = await Contact.findByIdAndUpdate (
-    {_id: contactId},
-    data,
-    {new: true, runValidators: true}
-  );
-  return updatedContact;
-};
-
-export const removeContact = async contactId => {
-  const deletedContact = await Contact.findOneAndDelete({_id: contactId});
-  return deletedContact;
-};
-
-
-export const getFavoritesContacts = async () => {
-const contact = await Contact.find ({favorite:true});
-  return contact
-};
-
