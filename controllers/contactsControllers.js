@@ -13,7 +13,7 @@ export const getAllContacts = async (req, res, next) => {
     let filter = { owner };
     const fields = '-createdAt -updatedAt';
     const skip = (page - 1) * limit;
-    const settings = { skip, limit };
+    const settings = {skip, limit};
     
     if (favorite) {
       filter =  { owner,favorite }

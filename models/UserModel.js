@@ -22,7 +22,7 @@ const userShema = Schema ({
     type: String,
     default: null,
   },
-});
+  });
 
 userShema.post ('save', saveContactErrorHook);
 

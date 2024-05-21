@@ -1,7 +1,7 @@
 import UserModel from '../models/UserModel.js';
 import bcrypt from 'bcrypt';
 
-export const findUser = async email => UserModel.findOne (email);
+export const findUser =  filter => UserModel.findOne (filter);
 
 export const createUser = async data => {
   const salt = await bcrypt.genSalt (10);
@@ -10,6 +10,7 @@ export const createUser = async data => {
   return userData;
 };
 
+export const updateUser = (filter,data)=> UserModel.findOneAndUpdate(filter,data)
+
 export const userLogout = async () => {};
 
-export const userCurrent = async () => {};
