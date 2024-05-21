@@ -2,10 +2,11 @@ import * as authServices from '../services/authServices.js';
 import {
   userRegistrationSchema,
   userLoginSchema,
+  authUpdateSubscriptionSchema,
 } from '../schemas/contactsSchemas.js';
 import HttpError from '../helpers/HttpError.js';
 import bcrypt from 'bcrypt';
-import { createToken,verifyToken } from '../helpers/jwtToken.js';
+import {createToken, verifyToken} from '../helpers/jwtToken.js';
 
 export const authRegistretion = async (req, res, next) => {
   try {
@@ -53,12 +54,11 @@ export const authLogin = async (req, res, next) => {
       throw HttpError (401, 'Email or password is wrong');
     }
     const payload = {
-      id:isUserExist._id
-    }
-    const token = createToken(payload)
-    const isVerify = verifyToken(token)
-    console.log(isVerify)
-    
+      id: isUserExist._id,
+    };
+    const token = createToken (payload);
+    await authServices.updateUser ({_id: isUserExist._id}, {token});
+
     res.json ({
       token: token,
       user: {
@@ -73,17 +73,33 @@ export const authLogin = async (req, res, next) => {
 
 export const authLogout = async (req, res, next) => {
   try {
-    // const result = await authServices.userLogout ();
-    res.json ('authLogout');
+    const {_id} = req.user;
+    await authServices.updateUser ({_id: _id}, {token: ''});
+    res.status (204).json ({message: 'No Content'});
   } catch (error) {
     next (error);
   }
 };
 
 export const authCurrentUser = async (req, res, next) => {
+  const {subscription, email} = req.user;
+  res.json ({subscription, email});
+};
+
+export const authUpdateSubscription = async (req, res, next) => {
   try {
-    // const result = await authServices.userCurrent ();
-    res.json ('authCurrentUser');
+    const {error} = authUpdateSubscriptionSchema.validate (req.body);
+    if (error) {
+      throw HttpError (400, 'The body must have a subscription field');
+    }
+    const {_id} = req.user;
+    const {subscription} = req.body;
+    await authServices.updateUser({ _id: _id }, { subscription: subscription });
+    
+    res
+      .status (201)
+      .json({ message: `Subscription was updated to - ${subscription}` });
+    
   } catch (error) {
     next (error);
   }

@@ -4,18 +4,21 @@ import {
   authLogin,
   authLogout,
   authRegistretion,
+  authUpdateSubscription
 } from '../controllers/authControllers.js';
 import isEmptyBody from '../middelwarws/isEmptyBody.js';
+import authenticate from '../middelwarws/authenticate.js';
 
+const authRouter = express.Router();
 
-const authRouter = express.Router ();
+authRouter.patch ('/', isEmptyBody,authenticate, authUpdateSubscription);
 
-authRouter.post ('/register',isEmptyBody, authRegistretion);
+authRouter.post ('/register', isEmptyBody, authRegistretion);
 
-authRouter.post ('/login',isEmptyBody, authLogin);
+authRouter.post ('/login', isEmptyBody, authLogin);
 
-authRouter.post ('/logout', authLogout);
+authRouter.post ('/logout',authenticate, authLogout);
 
-authRouter.post ('/current', authCurrentUser);
+authRouter.post ('/current', authenticate, authCurrentUser);
 
 export default authRouter;

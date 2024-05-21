@@ -1,5 +1,5 @@
 import {Schema, model} from 'mongoose';
-import { emailRegular } from '../constants/constants.js';
+import {emailRegular} from '../constants/constants.js';
 import {saveContactErrorHook, updateSittingsHook} from './hooks.js';
 
 const userShema = Schema ({
@@ -22,14 +22,9 @@ const userShema = Schema ({
     type: String,
     default: null,
   },
-  owner: {
-    type: Schema.Types.ObjectId,
-    ref: 'user',
-  },
-});
+  });
 
-
-userShema.post('save', saveContactErrorHook);
+userShema.post ('save', saveContactErrorHook);
 
 const UserModel = model ('users', userShema);
 export default UserModel;
