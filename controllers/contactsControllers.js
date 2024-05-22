@@ -10,13 +10,13 @@ export const getAllContacts = async (req, res, next) => {
   try {
     const {_id: owner} = req.user;
     const {page = 1, limit = 10, favorite = null} = req.query;
-    let filter = { owner };
+    let filter = {owner};
     const fields = '-createdAt -updatedAt';
     const skip = (page - 1) * limit;
     const settings = {skip, limit};
-    
+
     if (favorite) {
-      filter =  { owner,favorite }
+      filter = {owner, favorite};
     }
 
     const result = await contactsService.getAllContacts ({

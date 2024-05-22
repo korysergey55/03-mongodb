@@ -19,6 +19,6 @@ authRouter.post ('/login', isEmptyBody, authLogin);
 
 authRouter.post ('/logout',authenticate, authLogout);
 
-authRouter.post ('/current', authenticate, authCurrentUser);
+authRouter.get ('/current', authenticate, authCurrentUser);
 
 export default authRouter;
