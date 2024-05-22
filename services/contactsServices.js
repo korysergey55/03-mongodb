@@ -11,7 +11,7 @@ export const createContact = data =>
   Contact.create ({favorite: false, ...data});
 
 export const updateContactById = (filter, data) =>
-  Contact.findByIdAndUpdate (filter, data, {
+  Contact.findOneAndUpdate (filter, data, {
     new: true,
     runValidators: true,
   });
