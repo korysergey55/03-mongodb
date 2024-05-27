@@ -6,7 +6,12 @@ import {
 } from '../schemas/contactsSchemas.js';
 import HttpError from '../helpers/HttpError.js';
 import bcrypt from 'bcrypt';
-import {createToken, verifyToken} from '../helpers/jwtToken.js';
+import {createToken} from '../helpers/jwtToken.js';
+import gravatar from 'gravatar';
+import fs from 'fs/promises';
+import path from 'path';
+
+import Jimp from 'jimp';
 
 export const authRegistretion = async (req, res, next) => {
   try {
@@ -21,11 +26,14 @@ export const authRegistretion = async (req, res, next) => {
       throw HttpError (409, 'Email in use');
     }
 
+    const avatarURLGravatar = gravatar.url (email, {s: '250'});
+
     const newUser = await authServices.createUser (req.body);
     res.status (201).json ({
       user: {
         email: newUser.email,
         subscription: newUser.subscription,
+        avatarURL: avatarURLGravatar,
       },
     });
   } catch (error) {
@@ -94,12 +102,43 @@ export const authUpdateSubscription = async (req, res, next) => {
     }
     const {_id} = req.user;
     const {subscription} = req.body;
-    await authServices.updateUser({ _id: _id }, { subscription: subscription });
-    
+    await authServices.updateUser ({_id: _id}, {subscription: subscription});
+
     res
       .status (201)
-      .json({ message: `Subscription was updated to - ${subscription}` });
-    
+      .json ({message: `Subscription was updated to - ${subscription}`});
+  } catch (error) {
+    next (error);
+  }
+};
+
+export const authUpdateUserAvatar = async (req, res, next) => {
+  try {
+    const {_id} = req.user;
+    if (req.file) {
+      const {path: oldPath, filename} = req.file;
+      const folderPath = path.resolve ('public', 'avatars');
+      const newPath = path.join (folderPath, filename);
+
+      await fs.rename (oldPath, newPath);
+
+      Jimp.read (newPath)
+        .then (image => {
+          image.resize (250, 250);
+        })
+        .catch (err => {
+          // Handle an exception.
+        });
+
+      await authServices.updateUser (
+        {_id: _id},
+        {avatarURL: `public/avatars/${filename}`}
+      );
+
+      res.status (200).json ({
+        avatarURL: `public/avatars/${filename}`,
+      });
+    }
   } catch (error) {
     next (error);
   }

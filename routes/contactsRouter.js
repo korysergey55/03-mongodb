@@ -20,7 +20,7 @@ contactsRouter.get ('/:id', isValidId, getOneContact);
 
 contactsRouter.post ('/', createContact);
 
-contactsRouter.put ('/:id', isValidId, updateContact);
+contactsRouter.put('/:id', isValidId, updateContact);
 
 contactsRouter.delete('/:id', isValidId, deleteContact);
 

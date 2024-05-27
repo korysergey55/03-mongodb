@@ -16,7 +16,12 @@ app.use (cors ());
 app.use (morgan ('dev'));
 
 app.use('/api/contacts', contactsRouter);
-app.use('/users',authRouter)
+app.use('/users', authRouter)
+
+
+app.use(express.static('public'));
+app.use(express.static('avatars'));
+
 
 app.use ((_, res) => {
   res.status (404).json ({message: 'Route not found'});

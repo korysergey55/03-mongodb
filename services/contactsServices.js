@@ -8,7 +8,7 @@ export const getAllContacts = (search = {}) => {
 export const getContactById = filter => Contact.findOne (filter);
 
 export const createContact = data =>
-  Contact.create ({favorite: false, ...data});
+  Contact.create (data);
 
 export const updateContactById = (filter, data) =>
   Contact.findByIdAndUpdate (filter, data, {

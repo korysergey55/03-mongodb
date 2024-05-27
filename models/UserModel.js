@@ -22,7 +22,11 @@ const userShema = Schema ({
     type: String,
     default: null,
   },
-  });
+  avatarURL: {
+    type: String,
+    required: false,
+  },
+});
 
 userShema.post ('save', saveContactErrorHook);
 

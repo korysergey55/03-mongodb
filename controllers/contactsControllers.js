@@ -10,13 +10,13 @@ export const getAllContacts = async (req, res, next) => {
   try {
     const {_id: owner} = req.user;
     const {page = 1, limit = 10, favorite = null} = req.query;
-    let filter = { owner };
+    let filter = {owner};
     const fields = '-createdAt -updatedAt';
     const skip = (page - 1) * limit;
     const settings = {skip, limit};
-    
+
     if (favorite) {
-      filter =  { owner,favorite }
+      filter = {owner, favorite};
     }
 
     const result = await contactsService.getAllContacts ({
@@ -50,9 +50,13 @@ export const createContact = async (req, res, next) => {
     if (error) {
       throw HttpError (400, error.message);
     }
-
     const {_id: owner} = req.user;
-    const result = await contactsService.createContact ({...req.body, owner});
+
+    const result = await contactsService.createContact ({
+      ...req.body,
+      favorite: false,
+      owner,
+    });
     res.status (201).json (result);
   } catch (error) {
     next (error);
@@ -67,6 +71,7 @@ export const updateContact = async (req, res, next) => {
     }
     const {id: _id} = req.params;
     const {_id: owner} = req.user;
+
     const result = await contactsService.updateContactById (
       {_id, owner},
       req.body

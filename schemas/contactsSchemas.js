@@ -6,7 +6,7 @@ export const createContactSchema = Joi.object({
   name: Joi.string ().required (),
   email: Joi.string ().required (),
   phone: Joi.string().required(),
-  favorite:Joi.boolean(),
+  favorite: Joi.boolean(),
 });
 
 export const updateContactSchema = Joi.object({
@@ -34,6 +34,8 @@ export const userLoginSchema = Joi.object({
 export const authUpdateSubscriptionSchema = Joi.object({
   subscription: Joi.string().valid('starter', 'pro', 'business').required(),
 });
+
+
 
 
 
