@@ -114,31 +114,31 @@ export const authUpdateSubscription = async (req, res, next) => {
 
 export const authUpdateUserAvatar = async (req, res, next) => {
   try {
-    const {_id} = req.user;
-    if (req.file) {
-      const {path: oldPath, filename} = req.file;
-      const folderPath = path.resolve ('public', 'avatars');
-      const newPath = path.join (folderPath, filename);
-
-      await fs.rename (oldPath, newPath);
-
-      Jimp.read (newPath)
-        .then (image => {
-          image.resize (250, 250);
-        })
-        .catch (err => {
-          // Handle an exception.
-        });
-
-      await authServices.updateUser (
-        {_id: _id},
-        {avatarURL: `public/avatars/${filename}`}
-      );
-
-      res.status (200).json ({
-        avatarURL: `public/avatars/${filename}`,
-      });
+    if (!req.file) {
+      throw HttpError (400, 'The body must have a avatar file');
     }
+    const {_id} = req.user;
+    const { path: oldPath, filename } = req.file;
+    
+    const folderPath = path.resolve ('public', 'avatars');
+    const newPath = path.join (folderPath, filename);
+
+    await fs.rename (oldPath, newPath);
+
+    Jimp.read (newPath)
+      .then (image => {
+        image.resize (250, 250);
+      })
+      .catch (err => {
+        // Handle an exception.
+      });
+
+    const avatarPath = path.join ('avatars', filename);
+    await authServices.updateUser ({_id: _id}, {avatarURL: avatarPath});
+
+    res.status (200).json ({
+      avatarURL: avatarPath,
+    });
   } catch (error) {
     next (error);
   }
