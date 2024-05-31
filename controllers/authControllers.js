@@ -28,12 +28,15 @@ export const authRegistretion = async (req, res, next) => {
 
     const avatarURLGravatar = gravatar.url (email, {s: '250'});
 
-    const newUser = await authServices.createUser (req.body);
+    const newUser = await authServices.createUser ({
+      ...req.body,
+      avatarURL: avatarURLGravatar,
+    });
     res.status (201).json ({
       user: {
         email: newUser.email,
         subscription: newUser.subscription,
-        avatarURL: avatarURLGravatar,
+        avatarURL: newUser.avatarURL,
       },
     });
   } catch (error) {
@@ -118,8 +121,8 @@ export const authUpdateUserAvatar = async (req, res, next) => {
       throw HttpError (400, 'The body must have a avatar file');
     }
     const {_id} = req.user;
-    const { path: oldPath, filename } = req.file;
-    
+    const {path: oldPath, filename} = req.file;
+
     const folderPath = path.resolve ('public', 'avatars');
     const newPath = path.join (folderPath, filename);
 
