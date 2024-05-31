@@ -26,6 +26,14 @@ const userShema = Schema ({
     type: String,
     required: false,
   },
+   verify: {
+    type: Boolean,
+    default: false,
+  },
+  verificationToken: {
+    type: String,
+    required: [true, 'Verify token is required'],
+  },
 });
 
 userShema.post ('save', saveContactErrorHook);

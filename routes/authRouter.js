@@ -5,7 +5,8 @@ import {
   authLogout,
   authRegistretion,
   authUpdateSubscription,
-  authUpdateUserAvatar
+  authUpdateUserAvatar,
+  verificationRequest
 } from '../controllers/authControllers.js';
 import isEmptyBody from '../middelwarws/isEmptyBody.js';
 import authenticate from '../middelwarws/authenticate.js';
@@ -26,6 +27,8 @@ authRouter.post('/current', authenticate, authCurrentUser);
 authRouter.patch('/avatars', upload.single('avatar'), authenticate, authUpdateUserAvatar);
 // apload.array('poster',3-quontityFiles)
 // apload.fields([{name:'avatar', maxCount:1},{name:'info', maxCount:2}])
+
+authRouter.get('/verify/:verificationToken',  verificationRequest);
 
 
 export default authRouter;
