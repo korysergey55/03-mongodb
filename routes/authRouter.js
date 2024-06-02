@@ -6,8 +6,10 @@ import {
   authRegistretion,
   authUpdateSubscription,
   authUpdateUserAvatar,
-  verificationRequest
+  verifyEmail,
+  resendVerifyEmail
 } from '../controllers/authControllers.js';
+
 import isEmptyBody from '../middelwarws/isEmptyBody.js';
 import authenticate from '../middelwarws/authenticate.js';
 import upload from '../middelwarws/upload.js';
@@ -28,7 +30,9 @@ authRouter.patch('/avatars', upload.single('avatar'), authenticate, authUpdateUs
 // apload.array('poster',3-quontityFiles)
 // apload.fields([{name:'avatar', maxCount:1},{name:'info', maxCount:2}])
 
-authRouter.get('/verify/:verificationToken',  verificationRequest);
+authRouter.get('/verify/:verificationToken', verifyEmail);
+
+authRouter.post('/verify',isEmptyBody,  resendVerifyEmail);
 
 
 export default authRouter;

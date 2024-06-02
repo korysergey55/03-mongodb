@@ -1,8 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
-import mongoose from 'mongoose';
 import dotenv from 'dotenv'
+
+import mongoose from 'mongoose';
 
 import contactsRouter from './routes/contactsRouter.js';
 import authRouter from './routes/authRouter.js';
@@ -20,7 +21,6 @@ app.use('/users', authRouter)
 
 app.use(express.static('public'));
 app.use(express.static('avatars'));
-
 
 
 app.use ((_, res) => {
